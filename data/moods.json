@@ -33,7 +33,8 @@
 			},
 			{
 				"Person": "T",
-				"Feeling": 7
+				"Feeling": 7,
+				"Reason": "Hoobastank existed"
 			}
 		]
 	}, {
@@ -53,7 +54,8 @@
 		"Moods": [
 			{
 				"Person": "P",
-				"Feeling": 4
+				"Feeling": 4,
+				"Reason": "Ran out of doughnuts"
 			},
 			{
 				"Person": "T",

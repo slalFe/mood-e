@@ -9,6 +9,7 @@ var canvas;
 var xScale;
 var yScale;
 var tooltip;
+var points;
 
 function buildHeader () {
 	var svg = d3.select("body").append("svg")
@@ -83,6 +84,10 @@ function buildAverageLine (dates) {
         .attr("fill", "none");
 }
 
+function getFace (feeling) {
+	return feeling < 7 ? "_angry" : "";
+}
+
 function buildIndividualLines (dates, name, colour) {
 	function filterByName (d) {
 		return d.Person === name;
@@ -99,8 +104,11 @@ function buildIndividualLines (dates, name, colour) {
         .attr("stroke-width", 2)
         .attr("fill", "none");
 		
-	var points = canvas.selectAll("circle").data(dates).enter()
-		.append("circle")
+	if (points == undefined) {
+		points = canvas.selectAll("circle").data(dates).enter()
+	}
+		
+	points.append("circle")
 			.attr("cx", function (d) { return xScale(d3.time.format("%d/%m/%Y").parse(d.Date)) + axisPadding; })
 			.attr("cy", function (d) { 
 				return yScale(d3.mean(d.Moods.filter(filterByName), function (mood) { 
@@ -116,9 +124,9 @@ function buildIndividualLines (dates, name, colour) {
 				if (reason != undefined) {
 					tooltip
 						.text(reason)
-						.style("left", (d3.event.pageX - 34) + "px")
-						.style("top", (d3.event.pageY - 12) + "px")
-						.attr("xlink:href", "..\\data\\faces\\" + name + ".jpg")
+						.style("left", (d3.event.pageX) + "px")
+						.style("top", (d3.event.pageY - 30) + "px")
+						.style("background-image", "Url(./data/faces/" + name + getFace(d.Moods.filter(filterByName)[0].Feeling) + ".jpg)")
 						.transition()
 							.duration(500)
 							.style("opacity", 1);
