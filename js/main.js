@@ -57,7 +57,7 @@ function buildScales (dates) {
 }
 
 function buildAxes (dates) {
-	var xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+	var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(d3.time.days);
 	
 	var yAxis = d3.svg.axis().scale(yScale).orient("left");
 		
