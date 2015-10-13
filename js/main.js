@@ -1,8 +1,9 @@
-var h = 500;
-var w = 700;
+var h = window.innerHeight;
+var w = window.innerWidth;
 var headerHeight = 30;
-var canvasheight = h - headerHeight;
-var canvasPadding = 5;
+var canvasPadding = 50;
+var canvasHeight = h - headerHeight - canvasPadding;
+var canvasWidth = w - canvasPadding;
 var axisPadding = 50;
 var ds;
 var canvas;
@@ -24,17 +25,9 @@ function buildHeader () {
 
 function buildGraphArea () {
 	canvas = d3.select("body").append("svg")
-        .attr("width", w)
-        .attr("height", h - headerHeight);
-		
-	var borderPath = canvas.append("rect")
-		.attr("x", 0)
-		.attr("y", 1)
-		.attr("height", h - headerHeight - 1)
-		.attr("width", w)
-		.style("stroke", "blue")
-		.style("fill", "none")
-		.style("stroke-width", 1);
+        .attr("width", canvasWidth)
+        .attr("height", canvasHeight)
+		.attr("class", "mainCanvas");
 }
 
 function buildTooltip () {
@@ -54,7 +47,7 @@ function buildScales (dates) {
 	
 	var minMood = 0,
 		maxMood = 10;
-	yScale = d3.scale.linear().domain([maxMood, minMood]).range([axisPadding, canvasheight - axisPadding]);
+	yScale = d3.scale.linear().domain([maxMood, minMood]).range([axisPadding, canvasHeight - axisPadding]);
 }
 
 function buildAxes (dates) {
@@ -63,7 +56,7 @@ function buildAxes (dates) {
 	var yAxis = d3.svg.axis().scale(yScale).orient("left");
 		
 	var xAxisGroup = canvas.append("g")
-		.attr("transform", "translate(" + axisPadding + "," + (canvasheight - axisPadding) + ")")
+		.attr("transform", "translate(" + axisPadding + "," + (canvasHeight - axisPadding) + ")")
 		.call(xAxis);
 			
 	var yAxisGroup = canvas.append("g")
