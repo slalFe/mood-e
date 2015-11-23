@@ -1,10 +1,10 @@
-var h = window.innerHeight;
-var w = window.innerWidth;
 var headerHeight = 30;
 var canvasPadding = 50;
-var canvasHeight = h - headerHeight - canvasPadding;
-var canvasWidth = w - canvasPadding;
 var axisPadding = 50;
+var h;
+var w;
+var canvasHeight;
+var canvasWidth;
 var ds;
 var canvas;
 var xScale;
@@ -129,7 +129,18 @@ function buildIndividualLines (dates, name, colour) {
 			});
 }
 
-(function () {
+function DestroyEverything () {
+	d3.selectAll("svg").remove();
+}
+
+function DrawEverything() {
+	DestroyEverything();
+	
+	h = window.innerHeight;
+	w = window.innerWidth;
+	canvasHeight = h - headerHeight - canvasPadding;
+	canvasWidth = w - canvasPadding;
+	
 	buildHeader();
 	buildGraphArea();
 	buildTooltip();
@@ -148,4 +159,9 @@ function buildIndividualLines (dates, name, colour) {
 		buildIndividualLines(ds.Dates, "P", "green");
 		buildIndividualLines(ds.Dates, "T", "pink");
 	});
+}
+
+(function () {
+	DrawEverything();
+	window.onresize = DrawEverything;
 })();
