@@ -10,7 +10,6 @@ var canvas;
 var xScale;
 var yScale;
 var tooltip;
-var points;
 
 function buildHeader () {
 	var svg = d3.select("body").append("svg")
@@ -97,9 +96,7 @@ function buildIndividualLines (dates, name, colour) {
         .attr("stroke-width", 2)
         .attr("fill", "none");
 		
-	if (points == undefined) {
-		points = canvas.selectAll("circle").data(dates).enter()
-	}
+	var points = canvas.selectAll("." + name + "-tooltip").data(dates).enter();
 		
 	points.append("circle")
 			.attr("cx", function (d) { return xScale(d3.time.format("%d/%m/%Y").parse(d.Date)) + axisPadding; })
