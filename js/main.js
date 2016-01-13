@@ -117,6 +117,7 @@ function buildIndividualLines (dates, name, colour) {
 						.style("left", (d3.event.pageX) + "px")
 						.style("top", (d3.event.pageY - 30) + "px")
 						.style("background-image", "Url(./data/faces/" + name + getFace(d.Moods.filter(filterByName)[0].Feeling) + ".jpg)")
+						.style("background-size", "30px 30px")
 						.transition()
 							.duration(500)
 							.style("opacity", 1);
