@@ -42,7 +42,7 @@ function buildScales (dates) {
 	
 	var minDate = d3.min(dates, function(d){ return getDate(d.Date); }),
 		maxDate = d3.max(dates, function(d){ return getDate(d.Date); });
-	xScale = d3.time.scale().domain([minDate, maxDate]).range([0, w - (axisPadding*2)]);
+	xScale = d3.time.scale().domain([minDate, maxDate]).range([0, w - (axisPadding*3)]);
 	
 	var minMood = 0,
 		maxMood = 10;
