@@ -110,13 +110,28 @@ function buildIndividualLines (dates, name, colour) {
 				return reason != undefined ? 3 : 0;
 			})
 			.on("mouseover", function (d) {
-				var reason = d.Moods.filter(filterByName)[0].Reason;
-				if (reason != undefined) {
+				var mood = d.Moods.filter(filterByName)[0];
+				if (mood.Reason != undefined) {
 					tooltip
-						.text(reason)
+						.text(mood.Reason)
 						.style("left", (d3.event.pageX) + "px")
 						.style("top", (d3.event.pageY - 30) + "px")
-						.style("background-image", "Url(./data/faces/" + name + getFace(d.Moods.filter(filterByName)[0].Feeling) + ".jpg)")
+						.style("background-color", function () {
+							switch (mood.Feeling) {
+								case 10:
+								case 9:
+								case 8:
+									return "#9f9";
+								case 7:
+								case 6:
+								case 5:
+								case 4:
+									return "#6cf";
+								default:
+									return "#f99";
+							};
+						})
+						.style("background-image", "Url(./data/faces/" + name + getFace(mood.Feeling) + ".jpg)")
 						.style("background-size", "30px 30px")
 						.transition()
 							.duration(500)
