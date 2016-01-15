@@ -77,16 +77,6 @@ function buildLine (dates, colour, filterByName, name) {
 }
 
 function buildAverageLine (dates) {
-	// var showFeelings = d3.svg.line()
-        // .x(function (d) { return xScale(d3.time.format("%d/%m/%Y").parse(d.Date)) + axisPadding; })
-        // .y(function (d) { return yScale(d3.mean(d.Moods, function (mood) { return mood.Feeling; })); })
-        // .interpolate("linear");
-  
-	// var vix = canvas.append("path")
-        // .attr("d", showFeelings(dates))
-        // .attr("stroke", "purple")
-        // .attr("stroke-width", 2)
-        // .attr("fill", "none");
 	var filterByName = function  (d) {
 		return true;
 	}
@@ -108,17 +98,6 @@ function buildIndividualLines (dates, name, colour) {
 	function filterByName (d) {
 		return d.Person === name;
 	}
-	
-	// var showFeelings = d3.svg.line()
-        // .x(function (d) { return xScale(d3.time.format("%d/%m/%Y").parse(d.Date)) + axisPadding; })
-        // .y(function (d) { return yScale(d3.mean(d.Moods.filter(filterByName), function (mood) { return mood.Feeling; })); })
-        // .interpolate("linear");
-  
-	// var vix = canvas.append("path")
-        // .attr("d", showFeelings(dates))
-        // .attr("stroke", colour)
-        // .attr("stroke-width", 2)
-        // .attr("fill", "none");
 		
 	buildLine(dates, colour, filterByName, name);
 		
