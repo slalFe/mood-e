@@ -63,17 +63,41 @@ function buildAxes (dates) {
 		.call(yAxis);
 }
 
-function buildAverageLine (dates) {
-  var showFeelings = d3.svg.line()
-        .x(function (d) { return xScale(d3.time.format("%d/%m/%Y").parse(d.Date)) + axisPadding; })
-        .y(function (d) { return yScale(d3.mean(d.Moods, function (mood) { return mood.Feeling; })); })
-        .interpolate("linear");
+function buildLine (dates, colour, filterByName, name) {
+	var showFeelings = d3.svg.line()
+		.x(function (d) { return xScale(d3.time.format("%d/%m/%Y").parse(d.Date)) + axisPadding; })
+		.y(function (d) { return yScale(d3.mean(d.Moods.filter(filterByName), function (mood) { return mood.Feeling; })); })
+		.interpolate("linear");
   
-  var vix = canvas.append("path")
-        .attr("d", showFeelings(dates))
-        .attr("stroke", "purple")
+	var vix = canvas.append("path")
+		.attr("d", showFeelings(dates))
+        .attr("stroke", colour)
         .attr("stroke-width", 2)
         .attr("fill", "none");
+}
+
+function buildAverageLine (dates) {
+	// var showFeelings = d3.svg.line()
+        // .x(function (d) { return xScale(d3.time.format("%d/%m/%Y").parse(d.Date)) + axisPadding; })
+        // .y(function (d) { return yScale(d3.mean(d.Moods, function (mood) { return mood.Feeling; })); })
+        // .interpolate("linear");
+  
+	// var vix = canvas.append("path")
+        // .attr("d", showFeelings(dates))
+        // .attr("stroke", "purple")
+        // .attr("stroke-width", 2)
+        // .attr("fill", "none");
+	var filterByName = function  (d) {
+		return true;
+	}
+	buildLine(dates, "purple", filterByName, null);
+}
+
+function buildAnonymousLine (dates) {
+	var filterByName = function  (d) {
+		return d.Person === undefined;
+	}
+	buildLine(dates, "yellow", filterByName, null);
 }
 
 function getFace (feeling) {
@@ -85,16 +109,18 @@ function buildIndividualLines (dates, name, colour) {
 		return d.Person === name;
 	}
 	
-	var showFeelings = d3.svg.line()
-        .x(function (d) { return xScale(d3.time.format("%d/%m/%Y").parse(d.Date)) + axisPadding; })
-        .y(function (d) { return yScale(d3.mean(d.Moods.filter(filterByName), function (mood) { return mood.Feeling; })); })
-        .interpolate("linear");
+	// var showFeelings = d3.svg.line()
+        // .x(function (d) { return xScale(d3.time.format("%d/%m/%Y").parse(d.Date)) + axisPadding; })
+        // .y(function (d) { return yScale(d3.mean(d.Moods.filter(filterByName), function (mood) { return mood.Feeling; })); })
+        // .interpolate("linear");
   
-	var vix = canvas.append("path")
-        .attr("d", showFeelings(dates))
-        .attr("stroke", colour)
-        .attr("stroke-width", 2)
-        .attr("fill", "none");
+	// var vix = canvas.append("path")
+        // .attr("d", showFeelings(dates))
+        // .attr("stroke", colour)
+        // .attr("stroke-width", 2)
+        // .attr("fill", "none");
+		
+	buildLine(dates, colour, filterByName, name);
 		
 	var points = canvas.selectAll("." + name + "-tooltip").data(dates).enter();
 		
@@ -172,6 +198,7 @@ function DrawEverything() {
 		buildAxes(ds.Dates);
 		
 		buildAverageLine(ds.Dates);
+		buildAnonymousLine(ds.Dates);
 		buildIndividualLines(ds.Dates, "P", "green");
 		buildIndividualLines(ds.Dates, "T", "pink");
 	});

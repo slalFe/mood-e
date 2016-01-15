@@ -11,6 +11,9 @@
 				"Person": "T",
 				"Feeling": 0,
 				"Reason": "Stubbed my tootsy"
+			},
+			{
+				"Feeling": 1
 			}
 		]
 	}, {
@@ -23,6 +26,12 @@
 			{
 				"Person": "T",
 				"Feeling": 0
+			},
+			{
+				"Feeling": 2
+			},
+			{
+				"Feeling": 4
 			}
 		]
 	}, {
@@ -36,6 +45,12 @@
 				"Person": "T",
 				"Feeling": 7,
 				"Reason": "Hoobastank existed"
+			},
+			{
+				"Feeling": 10
+			},
+			{
+				"Feeling": 0
 			}
 		]
 	}, {
@@ -48,6 +63,18 @@
 			{
 				"Person": "T",
 				"Feeling": 7
+			},
+			{
+				"Feeling": 10
+			},
+			{
+				"Feeling": 9
+			},
+			{
+				"Feeling": 10
+			},
+			{
+				"Feeling": 9
 			}
 		]
 	}, {
