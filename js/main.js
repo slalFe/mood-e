@@ -111,8 +111,11 @@ function buildIndividualLines (dates, name, colour) {
 				}));
 			})
 			.attr("r", function (d) {
-				var reason = d.Moods.filter(filterByName)[0].Reason;
-				return reason != undefined ? 3 : 0;
+				var mood = d.Moods.filter(filterByName);
+				if (mood.length > 0) {
+					return mood[0].Reason != undefined ? 3 : 0;
+				}
+				return 0;
 			})
 			.on("mouseover", function (d) {
 				var mood = d.Moods.filter(filterByName)[0];
