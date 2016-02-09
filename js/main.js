@@ -178,8 +178,20 @@ function DrawEverything() {
 		
 		buildAverageLine(ds.Dates);
 		buildAnonymousLine(ds.Dates);
-		buildIndividualLines(ds.Dates, "P", "green");
-		buildIndividualLines(ds.Dates, "T", "pink");
+		
+		d3.json(".\\data\\people.json", function (error, data) {
+			if (error) {
+				console.log(error);
+			} else {
+				console.log(data);
+			}
+			
+			var people = data.People;
+			
+			people.forEach(function (person) {
+				buildIndividualLines(ds.Dates, person.Name, person.PreferredColour);
+			});
+		});
 	});
 }
 
