@@ -63,10 +63,10 @@ function buildAxes (dates) {
 		.call(yAxis);
 }
 
-function buildLine (dates, colour, filterByName, name) {
+function buildLine (dates, colour, filterMoodsByName, name) {
 	var showFeelings = d3.svg.line()
 		.x(function (d) { return xScale(d3.time.format("%d/%m/%Y").parse(d.Date)) + axisPadding; })
-		.y(function (d) { return yScale(d3.mean(d.Moods.filter(filterByName), function (mood) { return mood.Feeling; })); })
+		.y(function (d) { return yScale(d3.mean(d.Moods.filter(filterMoodsByName), function (mood) { return mood.Feeling; })); })
 		.interpolate("linear");
   
 	var vix = canvas.append("path")
@@ -77,48 +77,62 @@ function buildLine (dates, colour, filterByName, name) {
 }
 
 function buildAverageLine (dates) {
-	var filterByName = function  (d) {
+	var filterMoodsByName = function  (d) {
 		return true;
 	}
-	buildLine(dates, "purple", filterByName, null);
+	buildLine(dates, "purple", filterMoodsByName, null);
 }
 
 function buildAnonymousLine (dates) {
-	var filterByName = function  (d) {
+	var filterMoodsByName = function  (d) {
 		return d.Person === undefined;
 	}
-	buildLine(dates, "yellow", filterByName, null);
+	buildLine(dates, "yellow", filterMoodsByName, null);
 }
 
 function getFace (feeling) {
 	return feeling < 7 ? "_angry" : "";
 }
 
+function getDatesPersonHasFeelingsFor (dates, name) {
+	function filterDatesByName (d) {
+		var personHasMoodForTheDate = false;
+		d.Moods.forEach(function (mood) {
+			if (mood.Person === name){
+				personHasMoodForTheDate = true;
+			}
+		});
+	
+		return personHasMoodForTheDate;
+	}
+	
+	return dates.filter(filterDatesByName);
+};
+
 function buildIndividualLines (dates, name, colour) {
-	function filterByName (d) {
+	function filterMoodsByName (d) {
 		return d.Person === name;
 	}
+	
+	var individualsDates = getDatesPersonHasFeelingsFor(dates, name);
 		
-	buildLine(dates, colour, filterByName, name);
+	buildLine(individualsDates, colour, filterMoodsByName, name);
 		
-	var points = canvas.selectAll("." + name + "-tooltip").data(dates).enter();
+	var points = canvas.selectAll("." + name + "-tooltip").data(individualsDates).enter();
 		
 	points.append("circle")
 			.attr("cx", function (d) { return xScale(d3.time.format("%d/%m/%Y").parse(d.Date)) + axisPadding; })
 			.attr("cy", function (d) { 
-				return yScale(d3.mean(d.Moods.filter(filterByName), function (mood) { 
+				return yScale(d3.mean(d.Moods.filter(filterMoodsByName), function (mood) { 
 					return mood.Feeling; 
 				}));
 			})
 			.attr("r", function (d) {
-				var mood = d.Moods.filter(filterByName);
-				if (mood.length > 0) {
-					return mood[0].Reason != undefined ? 3 : 0;
-				}
-				return 0;
+				var reason = d.Moods.filter(filterMoodsByName)[0].Reason;
+				return reason != undefined ? 3 : 0;
 			})
 			.on("mouseover", function (d) {
-				var mood = d.Moods.filter(filterByName)[0];
+				var mood = d.Moods.filter(filterMoodsByName)[0];
 				if (mood.Reason != undefined) {
 					tooltip
 						.text(mood.Reason)
