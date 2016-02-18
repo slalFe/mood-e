@@ -1,0 +1,1 @@
+Running locally in Google Chrome requires you to start the browser with the --allow-file-access-from-files argument.
