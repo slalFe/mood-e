@@ -129,7 +129,7 @@ function buildIndividualLines (dates, name, colour) {
 			})
 			.attr("r", function (d) {
 				var reason = d.Moods.filter(filterMoodsByName)[0].Reason;
-				return reason != undefined ? 3 : 0;
+				return reason != undefined ? 3 : 1;
 			})
 			.on("mouseover", function (d) {
 				var mood = d.Moods.filter(filterMoodsByName)[0];
